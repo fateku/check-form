@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>form check</title>
+    <style>
+        * {
+            font-family: 微軟正黑體;
+            font-size: 20px;
+            margin: 0px;
+            padding: 0px;
+            background-color: #FFFFAA;
+        }
+
+
+        fieldset {
+            width: 700px;
+            margin-top: 100px;
+            margin-left: 450px;
+            padding: 16px;
+            border: 2px solid #000000;
+            border-radius: 15px;
+            text-align: left;
+        }
+
+        .st2 {
+            text-align: center;
+            width: 600px;
+        }
+
+        p {
+            color: gray;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="#" method="get" enctype="multipart/form-data">
+        <fieldset>
+            <legend>form ckeck</legend>
+            <div>
+                姓名: <input type="text" id="account" name="account" placeholder="請輸入姓名" autofocus autocomplete="off"
+                    onblur="checkName()">
+                <span id=account_span></span>
+                <p>(1.不可空白 2.至少兩個字以上 3.必須全部為中文字)</p>
+            </div><br>
+            <hr><br>
+            <div>
+                密碼: <input type="password" id="pwd" name="pwd" placeholder="請輸入密碼" onblur="checkPwd()">
+                <span id=pwd_span></span>
+                <p>(1.不可空白 2.至少6個字且必須包含英文字母、數字、特殊字元!@#$%^&*)</p>
+            </div><br>
+            <hr><br>
+            <div>
+                日期: <input type="text" id="date" name="date" placeholder="ex:2020/7/26" maxlength="10"
+                    onblur="checkDate()" autofocus autocomplete="off">
+                <span id=date_span></span>
+                <p>格式:西元年/月/日 yyyy/mm/dd</p>
+            </div><br>
+            <hr><br>
+            <div class="st2">
+                <input type="submit" value="送出">
+                <input type="reset" value="清除">
+            </div>
+        </fieldset>
+    </form>
+
+    <script>
+        function checkName() {
+            let theAccObj = document.getElementById("account");
+            let theAccObjVal = theAccObj.value;
+            let theAccObjValLen = theAccObjVal.length;
+            let re = /^[\u4e00-\u9fa5]{2,}$/;
+            if (theAccObjVal == "") {
+                document.getElementById("account_span").innerHTML = "姓名不能為空";
+            }
+            else if (theAccObjValLen < 2) {
+               document.getElementById("account_span").innerHTML = "姓名至少兩個字";
+            }
+            else if(!re.test(theAccObjVal)){
+                document.getElementById("account_span").innerHTML = "姓名必須為中文";
+            }
+            else if(re.test(theAccObjVal) && theAccObjValLen >= 2){
+                document.getElementById("account_span").innerHTML = "格式正確";
+            }
+            else {
+                document.getElementById("account_span").innerHTML = "格式錯誤";
+            }
+        }
+        function checkPwd() {
+            let thePwdObj = document.getElementById("pwd");
+            let thePwdObjVal = thePwdObj.value;
+            let thePwdObjValLen = thePwdObjVal.length;
+            let f1 = /^[a-zA-Z]{1,}$/;
+            let f2 = /^\d{1,}$/;
+            let f3 = /^\W{1,}$/;
+            if (thePwdObjVal == "")
+                document.getElementById("pwd_span").innerHTML = "密碼不能為空";
+            else if (thePwdObjValLen < 6) {
+                document.getElementById("pwd_span").innerHTML = "密碼至少6個字元";
+            }
+            else if(thePwdObjValLen >= 6){
+                if(f1.test(thePwdObjVal) || f2.test(thePwdObjVal) || f3.test(thePwdObjVal)){
+                    document.getElementById("pwd_span").innerHTML = "密碼錯誤";
+                }
+                else if(f1.test(thePwdObjVal) && f2.test(thePwdObjVal)){
+                    document.getElementById("pwd_span").innerHTML = "密碼錯誤";
+                }
+                else if(f1.test(thePwdObjVal) && f3.test(thePwdObjVal)){
+                    document.getElementById("pwd_span").innerHTML = "密碼錯誤";
+                }
+                else if(f2.test(thePwdObjVal) && f3.test(thePwdObjVal)){
+                    document.getElementById("pwd_span").innerHTML = "密碼錯誤";
+                }
+                else if(f1.test(thePwdObjVal) && f2.test(thePwdObjVal) && f3.test(thePwdObjVal)){
+                    document.getElementById("pwd_span").innerHTML = "密碼正確";
+                }
+                else{
+                    document.getElementById("pwd_span").innerHTML = "密碼錯誤";
+                }
+            }
+            else {
+                document.getElementById("pwd_span").innerHTML = "密碼錯誤";
+            }
+        }
+        function checkDate() {
+
+            let theDatObj = document.getElementById("date");
+            let theDatObjVal = theDatObj.value;
+            if (theDatObjVal == null || theDatObjVal == "" || theDatObjVal >= "a" || theDatObjVal <= "z") {
+                document.getElementById("date_span").innerText = "日期不能為空或英文字母";
+                return; //加個return在這裡，程式就不會再繼續往後走。直接離開checkDate()...
+            }
+
+            let a = true;
+            // First check for the pattern
+            if (/^\d{4}\/\d{1,2}\/\d{1,2}\$/.test(theDatObj))
+                a = false;
+
+            // Parse the date parts to integers
+            var parts = theDatObjVal.split("/");
+            var year = parseInt(parts[0], 10);
+            var month = parseInt(parts[1], 10);
+            var day = parseInt(parts[2], 10);
+            console.log(parts);
+
+            var monthLength = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+            // Adjust for leap years
+            if (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+                monthLength[1] = 29;
+
+            // Check the range of the day
+            a = day > 0 && day <= monthLength[month - 1];
+
+            // Check the ranges of month and year
+            if (year < 1000 || year > 3000 || month == 0 || month > 12 || parts[1].length != 2 || parts[2].length != 2)
+                a = false;
+
+            if (a) {
+                document.getElementById("date_span").innerText = "格式正確";
+            }
+            else {
+                document.getElementById("date_span").innerText = "請輸入 yyyy/mm/dd 格式或是該月份無此日期";
+            }
+
+
+        };
+    </script>
+</body>
+
+</html>
