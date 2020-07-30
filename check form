@@ -78,12 +78,12 @@
                 document.getElementById("account_span").innerHTML = "姓名不能為空";
             }
             else if (theAccObjValLen < 2) {
-               document.getElementById("account_span").innerHTML = "姓名至少兩個字";
+                document.getElementById("account_span").innerHTML = "姓名至少兩個字";
             }
-            else if(!re.test(theAccObjVal)){
+            else if (!re.test(theAccObjVal)) {
                 document.getElementById("account_span").innerHTML = "姓名必須為中文";
             }
-            else if(re.test(theAccObjVal) && theAccObjValLen >= 2){
+            else if (re.test(theAccObjVal) && theAccObjValLen >= 2) {
                 document.getElementById("account_span").innerHTML = "格式正確";
             }
             else {
@@ -94,33 +94,15 @@
             let thePwdObj = document.getElementById("pwd");
             let thePwdObjVal = thePwdObj.value;
             let thePwdObjValLen = thePwdObjVal.length;
-            let f1 = /^[a-zA-Z]{1,}$/;
-            let f2 = /^\d{1,}$/;
-            let f3 = /^\W{1,}$/;
+            let pwdCheck = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/;
+
             if (thePwdObjVal == "")
                 document.getElementById("pwd_span").innerHTML = "密碼不能為空";
             else if (thePwdObjValLen < 6) {
                 document.getElementById("pwd_span").innerHTML = "密碼至少6個字元";
             }
-            else if(thePwdObjValLen >= 6){
-                if(f1.test(thePwdObjVal) || f2.test(thePwdObjVal) || f3.test(thePwdObjVal)){
-                    document.getElementById("pwd_span").innerHTML = "密碼錯誤";
-                }
-                else if(f1.test(thePwdObjVal) && f2.test(thePwdObjVal)){
-                    document.getElementById("pwd_span").innerHTML = "密碼錯誤";
-                }
-                else if(f1.test(thePwdObjVal) && f3.test(thePwdObjVal)){
-                    document.getElementById("pwd_span").innerHTML = "密碼錯誤";
-                }
-                else if(f2.test(thePwdObjVal) && f3.test(thePwdObjVal)){
-                    document.getElementById("pwd_span").innerHTML = "密碼錯誤";
-                }
-                else if(f1.test(thePwdObjVal) && f2.test(thePwdObjVal) && f3.test(thePwdObjVal)){
-                    document.getElementById("pwd_span").innerHTML = "密碼正確";
-                }
-                else{
-                    document.getElementById("pwd_span").innerHTML = "密碼錯誤";
-                }
+            else if (pwdCheck.test(thePwdObjVal)) {
+                document.getElementById("pwd_span").innerHTML = "密碼正確";
             }
             else {
                 document.getElementById("pwd_span").innerHTML = "密碼錯誤";
@@ -135,10 +117,10 @@
                 return; //加個return在這裡，程式就不會再繼續往後走。直接離開checkDate()...
             }
 
-            let a = true;
+            let checkpattern = true;
             // First check for the pattern
             if (/^\d{4}\/\d{1,2}\/\d{1,2}\$/.test(theDatObj))
-                a = false;
+                checkpattern = false;
 
             // Parse the date parts to integers
             var parts = theDatObjVal.split("/");
